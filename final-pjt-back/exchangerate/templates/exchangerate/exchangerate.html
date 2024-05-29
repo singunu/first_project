@@ -1,0 +1,33 @@
+<!-- templates/exchangerate_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates</title>
+</head>
+<body>
+    <h1>Exchange Rates</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th>TTB</th>
+                <th>TTS</th>
+                <!-- Add other fields as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for rate in exchange_rates %}
+            <tr>
+                <td>{{ rate.cur_unit }}</td>
+                <td>{{ rate.ttb }}</td>
+                <td>{{ rate.tts }}</td>
+                <!-- Add other fields as needed -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
