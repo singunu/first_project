@@ -29,6 +29,8 @@ const formatDate = (dateString) => {
 </script>
 
 <style scoped>
+@import url('@/assets/fonts.css');
+
 .article-item {
   background-color: #fff;
   padding: 20px;
@@ -62,5 +64,6 @@ const formatDate = (dateString) => {
 .article-link {
   text-decoration: none;
   color: inherit;
+  font-family: 'Pretendard', sans-serif;
 }
 </style>

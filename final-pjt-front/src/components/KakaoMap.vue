@@ -1,6 +1,5 @@
 <template>
   <div class="bank-page">
-    <!-- 카테고리 선택 및 검색 -->
     <div class="category-search-container">
       <div class="category-selection">        
         <label for="region-select" class="visually-hidden">지역 선택</label>
@@ -22,11 +21,8 @@
         </select>
       </div>
 
-      <!-- 검색 버튼 -->
       <button @click="searchLocations" class="search-button">검색</button>
     </div>
-
-    <!-- 지도 -->
     <div ref="map" class="map-container"></div>
   </div>
 </template>
@@ -114,7 +110,6 @@ export default {
       });
     },
     showInfoWindow(location) {
-      // 이미 정의된 스타일 클래스인 .marker-info-window을 사용하여 스타일을 적용합니다.
       const content = `<div class="marker-info-window">
                         <div class="marker-info-title">${location.name}</div>
                         <div class="marker-info-address">${location.address}</div>
@@ -123,24 +118,19 @@ export default {
       if (!this.infowindow) {
         this.infowindow = new kakao.maps.InfoWindow({
           content: content,
-          // 다음 옵션을 설정하여 정보 창이 닫힐 때 infowindow 변수가 null이 되도록 합니다.
           disableAutoPan: true,
           removable: true
         });
       }
 
-      // 정보 창 내용을 설정합니다.
       this.infowindow.setContent(content);
-      // 정보 창 위치를 설정합니다. 마커 옆에 표시되도록 조정합니다.
       const markerPosition = new kakao.maps.LatLng(location.lat, location.lng);
       const offsetX = 40; // 마커 옆으로 이동할 거리
       const offsetY = -30; // 마커 위로 이동할 거리
       const infoWindowPosition = new kakao.maps.LatLng(markerPosition.getLat() + offsetY / 100000, markerPosition.getLng() + offsetX / 100000);
       this.infowindow.setPosition(infoWindowPosition);
-      // 정보 창을 지도에 표시합니다.
       this.infowindow.open(this.map);
     },
-
     searchLocations() {
       this.clearMarkers();
       if (this.selectedBank && this.selectedRegion && this.selectedDistrict) {
@@ -155,14 +145,12 @@ export default {
               });
               this.markers.push(marker);
               kakao.maps.event.addListener(marker, 'click', () => {
-                // 여기서 selectedMarker를 설정할 때, address 속성을 포함하여 설정합니다.
                 this.selectedMarker = {
                   lat: place.y,
                   lng: place.x,
                   name: place.place_name,
                   address: place.address_name
                 };
-                // showInfoWindow 메서드를 호출할 때, 올바른 location 객체를 전달합니다.
                 this.showInfoWindow(this.selectedMarker);
               });
             });
@@ -206,7 +194,10 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/fonts.css');
+
 .bank-page {
+  font-family: 'Pretendard', sans-serif;
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
@@ -273,5 +264,24 @@ export default {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+.marker-info-window {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.marker-info-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.marker-info-address {
+  font-size: 12px;
+  color: #666;
 }
 </style>

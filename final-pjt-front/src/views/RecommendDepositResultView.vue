@@ -8,7 +8,8 @@
       </h2>
       <h2 v-else>추천 예금 상품이 없습니다.</h2>
 
-      <h2 class="mt-5 mb-5">최고 금리 예금 상품</h2>
+      <h2 class="mt-5 mb-3">최고 금리 예금 상품</h2>
+      <h2 class="mt-2 mb-3">TOP 3</h2>
       <div v-if="loading">로딩 중...</div>
       <div v-if="error">{{ error }}</div>
       <div v-if="topDepositProducts.length" class="top-products">
@@ -22,8 +23,8 @@
           <h3>{{ product.product.fin_prdt_nm }}</h3>
           <hr />
           <p>{{ product.product.kor_co_nm }}</p>
-          <p>{{ product.product.etc_note }}</p>
-          <h4>옵션</h4>
+          <p>제한 사항 : {{ product.product.etc_note }}</p>
+          <h6>옵션</h6>
           <table class="options-table">
             <thead>
               <tr>
@@ -152,17 +153,12 @@ const remainingDepositProducts = computed(() => {
 <style scoped>
 @import '@/assets/fonts.css'; /* 폰트 스타일 가져오기 */
 
-body {
-  background-color: #B7D7FE; /* 배경색 설정 */
-  margin: 0;
-}
-
 .recommend-result {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* 세로 정렬 설정 */
-  background-color: #B7D7FE; /* 배경색 설정 */
+  background-color: #BED6FB; /* 배경색 설정 */
   min-height: 100vh; /* 페이지 전체 높이 설정 */
   padding-top: 50px; /* 상단 여백 추가 */
 }
@@ -191,9 +187,8 @@ body {
 }
 
 .user-name {
-  font-size: 60px;
-  font-weight: 800; /* 가장 두꺼운 폰트 */
-  color: black;
+  font-size: 2rem;
+  color: #4E5CBF;
   font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
@@ -219,6 +214,9 @@ h2 {
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -240,16 +238,24 @@ h2 {
   color: #4E5CBF; /* 제목 색상 변경 */
   font-weight: 700; /* 두꺼운 폰트 */
 }
-
+.product-card h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.product-card hr {
+  margin: 10px 0; /* 상하 여백 설정 */
+}
 .options-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
   font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+  margin-top: 10px;
 }
 
 .options-table th, .options-table td {
-  padding: 6px;
+  padding: 1px;
+  padding-top: 2px;
   border: 1px solid #ddd;
   text-align: center;
 }

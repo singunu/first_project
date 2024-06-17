@@ -99,5 +99,6 @@ h2 {
 
 .button:hover {
   background-color: #3a45a0; /* 호버 시 배경색 변경 */
+  color: #D3E5FF;
 }
 </style>

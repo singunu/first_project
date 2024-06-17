@@ -3,14 +3,15 @@
     <div class="progress-bar">
       <div class="progress" :style="{ width: '100%' }"></div>
     </div>
+    <h2>적금 정보를 입력하세요</h2>
     <h2>
       <div class="input-container inline">
-        <input v-model="savingMonthlyAmount" type="number" placeholder="월 납입 금액" ref="amountInput" @keyup.enter="nextStep" @input="showUnit('amount')" />
+        <input v-model="savingMonthlyAmount" type="number" placeholder="예: 60(만원)" ref="amountInput" @keyup.enter="nextStep" @input="handleInput('amount')" />
         <span v-if="showAmountUnit" class="unit">(만원/월)</span>
       </div>
-      을
+      씩
       <div class="input-container inline">
-        <input v-model="savingPeriod" type="number" placeholder="적금 기간 (개월)" @keyup.enter="nextStep" @input="showUnit('period')" />
+        <input v-model="savingPeriod" type="number" placeholder="예: 12(개월)" @keyup.enter="nextStep" @input="handleInput('period')" />
         <span v-if="showPeriodUnit" class="unit">(개월)</span>
       </div>
       동안 저축할래요!
@@ -20,14 +21,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFinancialStore } from '@/stores/financial';
 
 const router = useRouter();
 const store = useFinancialStore();
-const savingMonthlyAmount = ref();
-const savingPeriod = ref();
+const savingMonthlyAmount = ref('');
+const savingPeriod = ref('');
 const amountInput = ref(null);
 const showAmountUnit = ref(false);
 const showPeriodUnit = ref(false);
@@ -47,13 +48,21 @@ const nextStep = () => {
   }, 3000); // 3초 후에 결과 페이지로 이동
 };
 
-const showUnit = (type) => {
+const handleInput = (type) => {
   if (type === 'amount') {
-    showAmountUnit.value = true;
+    showAmountUnit.value = savingMonthlyAmount.value !== '';
   } else if (type === 'period') {
-    showPeriodUnit.value = true;
+    showPeriodUnit.value = savingPeriod.value !== '';
   }
 };
+
+watch(savingMonthlyAmount, (newValue) => {
+  showAmountUnit.value = newValue !== '';
+});
+
+watch(savingPeriod, (newValue) => {
+  showPeriodUnit.value = newValue !== '';
+});
 </script>
 
 <style scoped>
@@ -100,16 +109,14 @@ h2 {
 
 .input-container {
   position: relative;
-  display: inline-block; /* 인라인 블록으로 설정 */
-  vertical-align: middle; /* 수직 정렬 */
-  width: 20%; /* 너비 자동 설정 */
-
+  width: 15%;
+  margin-bottom: 1.5rem;
 }
 
 input {
   font-family: 'Pretendard', sans-serif;
   font-weight: 400; /* Regular */
-  font-size: 1.5rem; /* 크기 설정 */
+  font-size: 1.2rem; /* 크기 설정 */
   padding: 10px 20px; /* 패딩 설정 */
   border: 2px solid #4E5CBF; /* 테두리 색상 */
   border-radius: 5px; /* 모서리 둥글게 설정 */
@@ -117,20 +124,28 @@ input {
   width: 100%; /* 입력 필드 너비 설정 */
 }
 
+input::placeholder {
+  font-size: 1rem; /* 플레이스홀더 글자 크기 설정 */
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.inline {
+  display: inline-block;
+  vertical-align: middle;
+}
 
 .unit {
   position: absolute;
   right: 10px;
-  top: 53.7%;
+  top: 60%;
   transform: translateY(-50%);
   font-family: 'Pretendard', sans-serif;
   font-weight: 400; /* Regular */
-  font-size: 1.5rem; /* 크기 설정 */
+  font-size: 1.2rem; /* 크기 설정 */
   color: #4E5CBF; /* 색상 설정 */
 }
 

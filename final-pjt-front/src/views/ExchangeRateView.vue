@@ -4,7 +4,7 @@
       <div class="toggle-buttons">
         <label ref="label1" :class="{'toggle-label': true, 'active': currentView === 'table'}" @click="showTableView">전체 환율 보기</label>
         <label ref="label2" :class="{'toggle-label': true, 'active': currentView === 'calculator'}" @click="showCalculator">환율 계산기</label>
-          <div class="toggle-slider" :class="{'slide-right': currentView === 'calculator'}" :style="{ width: sliderWidth + 'px' }"></div>
+        <div class="toggle-slider" :class="{'slide-right': currentView === 'calculator'}" :style="{ width: sliderWidth + 'px' }"></div>
       </div>
     </div>
     <div v-if="currentView === 'table'">
@@ -60,6 +60,9 @@ onMounted(() => {
   const label1Width = label1.value.offsetWidth;
   const label2Width = label2.value.offsetWidth;
   sliderWidth.value = Math.max(label1Width, label2Width);
+  // 초기 설정 추가
+  label1.value.style.color = '#fff'; // 초기 "전체 환율 보기" 텍스트 흰색
+  label1.value.style.fontWeight = 'bold'; // 초기 "전체 환율 보기" 텍스트 bold
 });
 </script>
 
@@ -69,6 +72,60 @@ onMounted(() => {
 .container {
   padding: 20px;
   text-align: center;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+}
+
+.toggle-container {
+  position: relative;
+  width: 300px;
+  margin: 0 auto 20px; /* 가운데 정렬 및 아래 여백 추가 */
+}
+
+.toggle-option {
+  display: none;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  background-color: #f0f0f0; /* 밝은 배경색 */
+  border-radius: 25px;
+  padding: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 40px;
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+.toggle-label {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1;
+  font-size: 16px;
+  line-height: 40px; /* 수직 정렬 */
+  margin: 0; /* 기본 여백 제거 */
+  transition: color 0.3s, font-weight 0.3s; /* 색상 및 폰트 굵기 전환 */
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(50% - 10px); /* 슬라이더 너비 계산 */
+  height: calc(100% - 10px);
+  background-color: #4E5CBF; /* 새로운 색상 */
+  border-radius: 20px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  z-index: 0;
+}
+
+.toggle-slider-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
 .title {
@@ -99,72 +156,5 @@ onMounted(() => {
 
 .view-button:hover {
   background-color: #3a48a0;
-}
-
-.container {
-  padding: 20px;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 600;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.toggle-container {
-    position: relative;
-    width: 300px;
-    margin-bottom: 20px;
-    text-align: center; /* Center text */
-  }
-
-.toggle-option {
-  display: none;
-}
-
-.toggle-buttons {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  background-color: #f0f0f0; /* Light background */
-  border-radius: 25px;
-  padding: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 40px;
-  align-items: center; /* Center items vertically */
-}
-
-.toggle-label {
-  flex: 1;
-  text-align: center;
-  cursor: pointer;
-  z-index: 1;
-  font-size: 16px;
-  line-height: 40px; /* Align text vertically */
-  margin: 0; /* Remove default margins */
-  transition: color 0.3s, font-weight 0.3s; /* Transition for color and font-weight */
-}
-
-.toggle-slider {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: calc(33.33% - 10px);
-  height: calc(100% - 10px);
-  background-color: #4E5CBF; /* New color */
-  border-radius: 20px;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  z-index: 0;
-}
-
-.toggle-slider-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
 }
 </style>

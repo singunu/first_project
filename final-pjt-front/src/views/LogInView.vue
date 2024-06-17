@@ -7,12 +7,12 @@
       <div class="card-body">
         <form @submit.prevent="logIn">
           <div class="form-group">
-            <label for="username" class="login-label">Username</label>
-            <input type="text" v-model.trim="username" id="username" class="form-control login-input" placeholder="Enter username" required>
+            <label for="username" class="login-label">아이디</label>
+            <input type="text" v-model.trim="username" id="username" class="form-control login-input" placeholder="아이디를 입력하세요." required>
           </div>
           <div class="form-group">
-            <label for="password" class="login-label">Password</label>
-            <input type="password" v-model.trim="password" id="password" class="form-control login-input" placeholder="Enter password" required>
+            <label for="password" class="login-label">비밀번호</label>
+            <input type="password" v-model.trim="password" id="password" class="form-control login-input" placeholder="비밀번호를 입력하세요." required>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary btn-block mt-4 login-button">로그인</button>

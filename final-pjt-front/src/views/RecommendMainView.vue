@@ -3,10 +3,10 @@
     <div class="image-container">
       <img src="@/assets/images/giftstart.png" alt="giftstart Image" class="background-image" />
     </div>
-    <h1 class="title">상품 추천 알고리즘 시작 전 안내</h1>
+    <h1 class="title">고객님께 맞춤화된 상품을 소개해드려요</h1>
     <p class="subtitle">적절한 금융 상품을 추천 받으세요!</p>
     <RouterLink :to="{ name: 'RecommendNameView' }">
-      <button class="button">상품 추천 받으러 Go</button>
+      <button class="button">상품 추천 받으러 Go!</button>
     </RouterLink>
   </div>
 </template>
@@ -27,15 +27,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5rem; /* 상단 패딩 설정 */
+  padding-top: 0rem; /* 상단 패딩 설정 */
   background-color: #B7D7FE; /* 배경색 설정 */
-  min-height: 100vh; /* 페이지 전체 높이 설정 */
 }
 
 .image-container {
   text-align: center;
-  margin-bottom: 3rem; /* 하단 마진 설정 */
-  margin-top: 4rem;
+  margin-bottom: 0rem; /* 하단 마진 설정 */
+  margin-top: 0rem;
 }
 
 .background-image {
@@ -73,6 +72,7 @@ body {
   cursor: pointer; /* 마우스 커서 포인터로 변경 */
   text-align: center; /* 가운데 정렬 */
   margin-top: 2rem; /* 상단 마진 설정 */
+  margin-bottom: 20%;
 }
 
 .button:hover {

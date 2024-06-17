@@ -3,27 +3,27 @@
     <h1 class="text-center">회원가입</h1>
     <form @submit.prevent="signUp" class="signup-form">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" v-model.trim="username" id="username" class="form-control" placeholder="사용자명을 입력해주세요">
+        <label for="username">아이디</label>
+        <input type="text" v-model.trim="username" id="username" class="form-control" placeholder="사용하실 아이디를 입력해주세요">
       </div>
       <div class="form-group">
-        <label for="password1">Password</label>
+        <label for="password1">비밀번호</label>
         <input type="password" v-model.trim="password1" id="password1" class="form-control" placeholder="비밀번호를 입력해주세요">
       </div>
       <div class="form-group">
-        <label for="password2">Confirm Password</label>
-        <input type="password" v-model.trim="password2" id="password2" class="form-control" placeholder="비밀번호를 다시 입력해주세요">
+        <label for="password2">비밀번호 확인</label>
+        <input type="password" v-model.trim="password2" id="password2" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요">
       </div>
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">이름</label>
         <input type="text" v-model.trim="name" id="name" class="form-control" placeholder="이름을 입력해주세요">
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">이메일 주소</label>
         <input type="email" v-model.trim="email" id="email" class="form-control" placeholder="이메일을 입력해주세요">
       </div>
       <div class="form-group gender-radios">
-        <h5 style="font-weight: bold;">성별</h5>
+        <h6><b>성별</b></h6>
         <label for="male" class="gender-radio">
           <input type="radio" v-model="gender" value="male" id="male" name="gender">
           <span class="checkmark"></span>
@@ -36,8 +36,8 @@
         </label>
       </div>
       <div class="form-group">
-        <label for="birth_date">Birth Date</label>
-        <input type="date" v-model="birth_date" id="birth_date" class="form-control">
+        <label for="birth_date">생년월일</label>
+        <input type="date" v-model="birth_date" id="birth_date" class="form-control ">
       </div>
       <button type="submit" class="btn-submit">가입하기</button>
     </form>
@@ -72,9 +72,12 @@ const signUp = function () {
 </script>
 
 <style scoped>
+@import url('@/assets/fonts.css');
+
 .signup-container {
   max-width: 400px;
   margin: 0 auto;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .signup-form {
@@ -105,7 +108,7 @@ label {
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #4E5CBF;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -115,7 +118,7 @@ label {
 }
 
 .btn-submit:hover {
-  background-color: #0056b3;
+  background-color: #3a48a0;
 }
 
 /* Styles for gender radios */
@@ -144,15 +147,15 @@ label {
   height: 20px;
   width: 20px;
   background-color: #fff;
-  border: 2px solid #007bff;
+  border: 2px solid #4E5CBF;
   border-radius: 50%;
   margin-right: 10px;
 }
 
 /* Show the checkmark when radio button is checked */
 .gender-radios input[type="radio"]:checked + .checkmark {
-  background-color: #007bff;
-  border: 2px solid #007bff;
+  background-color: #4E5CBF;
+  border: 2px solid #4E5CBF;
 }
 
 /* Styling for the checkmark */

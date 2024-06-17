@@ -38,7 +38,7 @@ const props = defineProps({
 });
 
 const filteredSavingProducts = computed(() => {
-  if (props.selectedBank === '전체') {
+  if (props.selectedBank === '전체은행') {
     return store.savingProducts;
   } else {
     return store.savingProducts.filter(product => product.kor_co_nm === props.selectedBank);

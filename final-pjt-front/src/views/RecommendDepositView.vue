@@ -4,40 +4,31 @@
       <div class="progress" :style="{ width: '100%' }"></div>
     </div>
     <h2>예금 정보를 입력하세요</h2>
-    <!-- <div class="input-container">
-      <input v-model="depositAmount" type="number" placeholder="예금 금액" ref="amountInput" @keyup.enter="nextStep" @input="showUnit('amount')" />
-      <span v-if="showAmountUnit" class="unit">만원</span>
-      
-    </div>
-    <div class="input-container">
-      <input v-model="depositPeriod" type="number" placeholder="예금 기간 (개월)" @keyup.enter="nextStep" @input="showUnit('period')" />
-      <span v-if="showPeriodUnit" class="unit">개월</span>
-    </div> -->
     <h2>
-    <div class="input-container inline">
-      <input v-model="depositAmount" type="number" placeholder="예금 금액" ref="amountInput" @keyup.enter="nextStep" @input="showUnit('amount')" />
-      <div v-if="showAmountUnit" class="unit">만원</div>
-    </div>
-    을
-    <div class="input-container inline">
-      <input v-model="depositPeriod" type="number" placeholder="예금 기간 (개월)" @keyup.enter="nextStep" @input="showUnit('period')" />
-      <div v-if="showPeriodUnit" class="unit">개월</div>
-    </div>
-    동안 저축할래요!
-  </h2>
+      <div class="input-container inline">
+        <input v-model="depositAmount" type="number" placeholder="예: 100(만원)" ref="amountInput" @keyup.enter="nextStep" @input="handleInput('amount')" />
+        <div v-if="showAmountUnit" class="unit">만원</div>
+      </div>
+      을
+      <div class="input-container inline">
+        <input v-model="depositPeriod" type="number" placeholder="예: 24(개월)" @keyup.enter="nextStep" @input="handleInput('period')" />
+        <div v-if="showPeriodUnit" class="unit">개월</div>
+      </div>
+      동안 저축할래요!
+    </h2>
     <button class="next-button" @click="nextStep">결과 보기</button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFinancialStore } from '@/stores/financial';
 
 const router = useRouter();
 const store = useFinancialStore();
-const depositAmount = ref();
-const depositPeriod = ref();
+const depositAmount = ref('');
+const depositPeriod = ref('');
 const amountInput = ref(null);
 const showAmountUnit = ref(false);
 const showPeriodUnit = ref(false);
@@ -57,14 +48,21 @@ const nextStep = () => {
   }, 3000); // 3초 후에 결과 페이지로 이동
 };
 
-
-const showUnit = (type) => {
+const handleInput = (type) => {
   if (type === 'amount') {
-    showAmountUnit.value = true;
+    showAmountUnit.value = depositAmount.value !== '';
   } else if (type === 'period') {
-    showPeriodUnit.value = true;
+    showPeriodUnit.value = depositPeriod.value !== '';
   }
 };
+
+watch(depositAmount, (newValue) => {
+  showAmountUnit.value = newValue !== '';
+});
+
+watch(depositPeriod, (newValue) => {
+  showPeriodUnit.value = newValue !== '';
+});
 </script>
 
 <style scoped>
@@ -112,13 +110,13 @@ h2 {
 .input-container {
   position: relative;
   width: 15%;
-  margin-bottom: 1.5rem; /* 하단 마진 설정 */
+  margin-bottom: 1.5rem;
 }
 
 input {
   font-family: 'Pretendard', sans-serif;
   font-weight: 400; /* Regular */
-  font-size: 1.5rem; /* 크기 설정 */
+  font-size: 1.2rem; /* 크기 설정 */
   padding: 10px 20px; /* 패딩 설정 */
   border: 2px solid #4E5CBF; /* 테두리 색상 */
   border-radius: 5px; /* 모서리 둥글게 설정 */
@@ -131,20 +129,22 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+input::placeholder {
+  font-size: 1rem; /* 플레이스홀더 글자 크기 설정 */
+}
 .inline {
   display: inline-block;
   vertical-align: middle;
 }
+
 .unit {
   position: absolute;
   right: 10px;
-  top: 55%;
-  display: inline-block;
-  vertical-align: middle;
+  top: 60%;
   transform: translateY(-50%);
   font-family: 'Pretendard', sans-serif;
   font-weight: 400; /* Regular */
-  font-size: 1.5rem; /* 크기 설정 */
+  font-size: 1.2rem; /* 크기 설정 */
   color: #4E5CBF; /* 색상 설정 */
 }
 

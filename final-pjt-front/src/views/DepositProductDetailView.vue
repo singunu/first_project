@@ -63,28 +63,37 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import '@/assets/fonts.css'; /* 폰트 스타일 가져오기 */
+
 .container {
   padding: 20px;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
 .product-details {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 60px;
+  padding: 40px;
   background-color: #f9f9f9;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.title{
+.title {
   color: #4E5CBF;
+  font-weight: 600; /* SemiBold */
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
 }
 
 .product-info {
   margin-bottom: 20px;
-  margin-top: 40px;
 }
 
 .info-item {
-  margin: 20px 0;
+  margin: 10px 0; /* 위아래 여백 조정 */
+  color: #333;
 }
 
 .options-table {
@@ -101,11 +110,22 @@ onMounted(() => {
 }
 
 .options-table th {
-  background-color: #f2f2f2;
+  background-color: #4E5CBF;
+  color: white;
+  font-weight: 600; /* SemiBold */
+}
+
+.options-table td {
+  font-weight: 300; /* Light */
+  color: #333;
 }
 
 .mg-top {
   margin-top: 25px;
+  font-size: 1.5rem;
+  color: #4E5CBF;
+  font-weight: 600; /* SemiBold */
+  text-align: center;
 }
 
 @font-face {
@@ -117,17 +137,10 @@ onMounted(() => {
 
 .video-text {
   font-family: 'Pretendard', sans-serif;
-  font-weight: 600; /* SemiBold /
-  font-size: 12px; / 크기 설정 /
-  color: #4E5CBF; / 색상 설정 /
-  text-align: center; / 가운데 정렬 /
-  margin-bottom: 3rem; / 하단 마진 설정 /
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #515151;
-  font-size: 1.5rem;
-  / text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); */
+  font-weight: 600; /* SemiBold */
+  font-size: 2rem; /* 크기 설정 */
+  color: #4E5CBF; /* 색상 설정 */
+  text-align: center; /* 가운데 정렬 */
+  margin-bottom: 3rem; /* 하단 마진 설정 */
 }
 </style>

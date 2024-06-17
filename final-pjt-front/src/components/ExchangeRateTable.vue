@@ -51,9 +51,9 @@ body {
   font-weight: 600; /* SemiBold */
   font-size: 2rem;
   margin-bottom: 20px;
-  color: #333;
+  color: #4E5CBF;
   text-align: center;
-  padding-top: 20px;
+  padding-top: 70px;
 }
 
 .exchange-rate-table {

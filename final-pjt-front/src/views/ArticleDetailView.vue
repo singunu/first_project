@@ -3,24 +3,22 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <div class="card shadow rounded p-4">
-          <h2 class="text-center mb-4" style="color: #333; font-weight: bold;">게시글 상세 정보</h2>
+          <h2 class="text-center mb-4 title">게시글 상세 정보</h2>
           <div v-if="article" class="mb-4 mt-5">
-            <p class="text-muted"><strong>글 번호:</strong> {{ article.id }}</p>
             <p class="text-muted"><strong>제목:</strong> {{ article.title }}</p>
             <p class="text-muted"><strong>내용:</strong> {{ article.content }}</p>
             <p class="text-muted"><strong>작성자:</strong> {{ article.user.name }}</p>
-            <p class="text-muted"><strong>작성 시간:</strong> {{ formatDate(article.created_at) }}</p>
-            <p class="text-muted"><strong>수정 시간:</strong> {{ formatDate(article.updated_at) }}</p>
+            <p class="text-muted"><strong>작성:</strong> {{ formatDate(article.created_at) }}<strong> <span></span> 수정:</strong> {{ formatDate(article.updated_at) }}</p>
             <div class="d-flex justify-content-end">
               <RouterLink v-if="article.user.username === store.user.username" :to="{ name: 'ArticleUpdateView', params: { id: article.id } }" class="btn btn-success btn-sm mr-2 mg-right">수정</RouterLink>
               <button v-if="article.user.username === store.user.username" @click="deleteArticle" class="btn btn-danger btn-sm">삭제</button>
             </div>
           </div>
           <div class="mb-4">
-            <h2 class="text-center mb-3" style="color: #333; font-weight: bold;">댓글 작성</h2>
+            <h2 class="text-center mb-3 title">댓글 작성</h2>
             <form @submit.prevent="createComment">
               <textarea v-model="content" placeholder="댓글을 입력하세요" class="form-control mb-3"></textarea>
-              <button type="submit" class="btn btn-primary btn-lg btn-block hover-effect">댓글 작성</button>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">댓글 작성</button>
             </form>
           </div>
           <div>
@@ -105,9 +103,12 @@ const formatDate = (dateString) => {
 </script>
 
 <style scoped>
+@import url('@/assets/fonts.css');
+
 .container-fluid {
   padding-left: 15px;
   padding-right: 15px;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .card {
@@ -116,11 +117,19 @@ const formatDate = (dateString) => {
   border-radius: 15px;
 }
 
+.title {
+  color: #333;
+  font-weight: bold;
+}
+
 .btn-primary {
   background-color: #4E5CBF;
   border-color: #4E5CBF;
   transition: background-color 0.3s ease, border-color 0.3s ease;
-  padding: 0.375rem 0.75rem;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
 }
 
 .btn-danger {
@@ -128,7 +137,11 @@ const formatDate = (dateString) => {
   border-color: #dc3545;
   color: #dc3545;
   transition: color 0.3s ease, border-color 0.3s ease;
-  padding: 0.375rem 0.75rem;
+}
+
+.btn-danger:hover {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
 }
 
 .btn-success {
@@ -136,37 +149,11 @@ const formatDate = (dateString) => {
   border-color: #28a745;
   color: #28a745;
   transition: color 0.3s ease, border-color 0.3s ease;
-  padding: 0.375rem 0.75rem;
-}
-
-.btn-primary:hover {
-  filter: brightness(90%);
-  transition: filter 0.3s ease;
-}
-
-.btn-danger:hover {
-  color: #ff6b6b;
-  border-color: #ff6b6b;
-  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-success:hover {
   color: #2ecc71;
   border-color: #2ecc71;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.btn-lg {
-  font-size: 1rem;
-}
-
-.btn-sm {
-  font-size: 0.875rem;
-}
-
-textarea {
-  resize: none;
-  border-radius: 10px;
 }
 
 .btn-block {

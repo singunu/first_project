@@ -1,13 +1,15 @@
 <template>
   <div class="recommend-result">
-    <div class="progress-bar">
-      <div class="progress" :style="{ width: '100%' }"></div>
-    </div>
     <div class="container">
-      <h2 v-if="calculatedAmount">{{ store.name }}님은 {{ store.savingPeriod }}개월 뒤에 {{ formatAmount(calculatedAmount) }}원을 모을 수 있어요!</h2>
+      <img src="@/assets/images/result.png" alt="Result Image" class="result-image" />
+      <h2 class="result" v-if="calculatedAmount">
+        <span class="user-name">{{ store.name }}</span>님은 {{ store.savingPeriod }}개월 뒤에 
+        <span class="calculated-amount">{{ formatAmount(calculatedAmount) }}</span>원을 모을 수 있어요!
+      </h2>
       <h2 v-else>추천 적금 상품이 없습니다.</h2>
 
-      <h2>최고 금리 적금 상품</h2>
+      <h2 class="mt-5 mb-3">최고 금리 적금 상품</h2>
+      <h2 class="mt-2 mb-3">TOP 3</h2>
       <div v-if="loading">로딩 중...</div>
       <div v-if="error">{{ error }}</div>
       <div v-if="topSavingProducts.length" class="top-products">
@@ -18,10 +20,11 @@
           target="_blank"
           class="product-card"
         >
-          <h3>{{ product.product.kor_co_nm }}</h3>
-          <p>{{ product.product.fin_prdt_nm }}</p>
-          <p>{{ product.product.etc_note }}</p>
-          <h4>옵션</h4>
+          <h3>{{ product.product.fin_prdt_nm }}</h3>
+          <hr />
+          <p>{{ product.product.kor_co_nm }}</p>
+          <p>제한 사항 : {{ product.product.etc_note }}</p>
+          <h6>옵션</h6>
           <table class="options-table">
             <thead>
               <tr>
@@ -47,21 +50,23 @@
         <RouterLink :to="{ name: 'ProductsView' }" class="view-all">전체상품 보러가기</RouterLink>
       </div>
 
-      <h2>추천 적금 상품</h2>
+      <h2 class="recommend-title mt-5 text-center">추천 적금 상품</h2>
       <div v-if="remainingSavingProducts.length">
-        <ul>
-          <li v-for="product in remainingSavingProducts.slice(0, showAll ? remainingSavingProducts.length : 5)" :key="product.fin_prdt_cd" class="recommend-card">
-            <a :href="`/saving-product-options/${product.fin_prdt_cd}`" target="_blank" class="product-link">
-              <p class="bank-name">{{ product.kor_co_nm }}</p>
-              <p class="product-name">{{ product.fin_prdt_nm }}</p>
-              <p class="rates">
-                <span class="rate-high">{{ product.max_intr_rate2 }}%</span>
-                <span class="rate-low">{{ product.min_intr_rate2 }}%</span>
-              </p>
-            </a>
+        <ul class="product-list">
+          <li v-for="product in remainingSavingProducts.slice(0, showAll ? remainingSavingProducts.length : 5)" :key="product.fin_prdt_cd">
+            <RouterLink :to="`/saving-product-options/${product.fin_prdt_cd}`" class="product-link">
+              <div class="recommend-card">
+                <p class="bank-name">{{ product.kor_co_nm }}</p>
+                <p class="product-name">{{ product.fin_prdt_nm }}</p>
+                <p class="rates">
+                  <span class="rate-high">최고 {{ product.max_intr_rate2 }}%</span>
+                  <span class="rate-low">최저 {{ product.min_intr_rate2 }}%</span>
+                </p>
+              </div>
+            </RouterLink>
           </li>
         </ul>
-        <button v-if="!showAll" @click="showAll = true">더보기</button>
+        <button v-if="!showAll" @click="showAll = true" class="button">더보기</button>
       </div>
       <div v-else>
         조건에 맞는 상품이 없습니다!
@@ -156,51 +161,59 @@ const remainingSavingProducts = computed(() => {
 <style scoped>
 @import '@/assets/fonts.css'; /* 폰트 스타일 가져오기 */
 
-body {
-  background-color: #B7D7FE; /* 배경색 설정 */
-  margin: 0;
-}
 
 .recommend-result {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center; /* 세로 가운데 정렬 */
-  background-color: #B7D7FE; /* 배경색 설정 */
+  background-color: #BED6FB; /* 배경색 설정 */
   min-height: 100vh; /* 페이지 전체 높이 설정 */
+  padding-top: 50px;
 }
-
-.progress-bar {
-  width: 80%;
-  height: 20px;
-  background-color: #D3E5FF;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 2rem; /* 하단 마진 설정 */
-}
-
-.progress {
-  height: 100%;
-  background-color: #4E5CBF;
-  border-radius: 10px;
-  transition: width 0.3s;
+.result-image {
+  max-width: 200px; /* 이미지 크기 조절 */
+  margin-bottom: 20px; /* 이미지와 텍스트 사이 여백 */
 }
 
 .container {
-  padding: 20px;
-  background-color: #ffffff;
+  padding: 0px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 800px;
+  text-align: center; /* 텍스트 가운데 정렬 */
 }
 
 .user-info p {
   margin: 0 0 10px 0;
 }
 
+.result {
+  color: #4E5CBF;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+}
+
+.user-name {
+  font-size: 2rem;
+  color: #4E5CBF;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+}
+
+.calculated-amount {
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 h2 {
   color: #4E5CBF;
   margin-bottom: 20px;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+}
+
+.text-center {
+  text-align: center;
 }
 
 .top-products {
@@ -209,31 +222,61 @@ h2 {
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
-  width: 30%;
+  width: 35%; /* 카드 가로 길이 조정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s;
   text-decoration: none;
   color: inherit;
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
 .product-card:hover {
   background-color: #e9ecef;
 }
 
+.product-card h3 {
+  color: #4E5CBF; /* 제목 색상 변경 */
+  font-weight: 700; /* 두꺼운 폰트 */
+}
+.product-card h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.product-card hr {
+  margin: 10px 0; /* 상하 여백 설정 */
+}
 .options-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+  margin-top: 10px;
 }
 
 .options-table th, .options-table td {
-  padding: 6px;
+  padding: 1px;
+  padding-top: 2px;
   border: 1px solid #ddd;
   text-align: center;
+}
+
+.recommend-title {
+  text-align: center;
+  width: 100%; /* 추천 적금 상품 제목 왼쪽 정렬 */
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 0;
 }
 
 .recommend-card {
@@ -242,12 +285,14 @@ h2 {
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
 .bank-name {
   font-size: 12px;
   color: #777;
   margin-bottom: 4px;
+  text-align: left; /* 왼쪽 정렬 */
 }
 
 .product-name {
@@ -255,11 +300,12 @@ h2 {
   color: #4E5CBF;
   font-weight: bold;
   margin-bottom: 4px;
+  text-align: left; /* 왼쪽 정렬 */
 }
 
 .rates {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* 양쪽 정렬 */
 }
 
 .rate-high {
@@ -277,6 +323,7 @@ h2 {
   text-decoration: none;
   color: inherit;
   transition: background-color 0.3s;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
 .product-link:hover {
@@ -286,15 +333,36 @@ h2 {
 .view-all {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #4E5CBF;
-  color: white;
+  background-color: white; /* 변경된 배경색 */
+  color: #4E5CBF; /* 변경된 글자색 */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
+  font-family: 'Pretendard', sans-serif; /* 폰트 스타일 설정 */
 }
 
 .view-all:hover {
-  background-color: #3a45a0;
+  background-color: #e9ecef;
 }
+
+.button {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 500; /* Medium */
+  font-size: 1.5rem; /* 크기 설정 */
+  background-color: #4E5CBF; /* 변경된 배경색 */
+  color: white; /* 변경된 글자색 */
+  padding: 15px 30px; /* 패딩 설정 */
+  border: none; /* 테두리 없음 */
+  border-radius: 10px; /* 모서리 둥글게 설정 */
+  cursor: pointer; /* 마우스 커서 포인터로 변경 */
+  margin-bottom: 1rem; /* 버튼 간격 설정 */
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: white; /* 호버 시 배경색 변경 */
+  color: #4E5CBF; /* 호버 시 글자색 변경 */
+}
+
 </style>

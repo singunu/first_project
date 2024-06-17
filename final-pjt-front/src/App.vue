@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg fixed-top" :class="navbarClass" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-      <div class="container-fluid">
-        <RouterLink class="nav-link active logo logo-padding" :to="{ name: 'MainPageView' }">richbeats</RouterLink>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg fixed-top no-padding" :class="navbarClass" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+      <div class="container-fluid navbar-content">
+        <RouterLink class="nav-link active logo logo-padding d-lg-none mx-auto" :to="{ name: 'MainPageView' }">richbeats</RouterLink>
+        <RouterLink class="nav-link active logo logo-padding d-none d-lg-block" :to="{ name: 'MainPageView' }">richbeats</RouterLink>
+
+        <button class="navbar-toggler" type="button" @click="isNavCollapsed = !isNavCollapsed">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+
+        <div :class="['collapse', 'navbar-collapse', { show: !isNavCollapsed }, 'justify-content-center']">
           <ul class="navbar-nav">
             <li class="nav-item">
               <RouterLink class="nav-link product-title" :to="{ name: 'ProductsView' }">예적금</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link product-title" :to="{ name: 'RecommendMainView' }">금융상품추천</RouterLink>
+              <RouterLink class="nav-link product-title" :to="{ name: 'RecommendMainView' }">맞춤상품추천</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link product-title" :to="{ name: 'ExchangeRateView' }">환율</RouterLink>
@@ -25,7 +28,7 @@
             </li>
           </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div :class="['collapse', 'navbar-collapse', { show: !isNavCollapsed }, 'justify-content-end']">
           <ul class="navbar-nav">
             <li class="nav-item" v-if="!store.isLoggedIn">
               <RouterLink class="nav-link button" :to="{ name: 'LogInView' }">로그인</RouterLink>
@@ -43,13 +46,14 @@
         </div>
       </div>
     </nav>
-
-    <div :class="mainContentClass">
-      <div class="background-image-container" v-if="route.name === 'MainPageView'">
-        <img src="@/assets/images/background.png" class="background-image" alt="Background Image">
+    <div>
+      <div :class="['main-content', { 'with-padding': route.name !== 'MainPageView' }]">
+        <RouterView />
       </div>
-      <RouterView />
     </div>
+    <footer class="footer">
+      <p>© 2024 Richbeats. All rights reserved.</p>
+    </footer>
   </div>
 </template>
 
@@ -61,9 +65,9 @@ import { computed, ref, onMounted, onUnmounted } from 'vue';
 const store = useFinancialStore();
 const route = useRoute();
 
-const isLoggedIn = computed(() => store.isLoggedIn);
 const isScrolled = ref(false);
 const isHovered = ref(false);
+const isNavCollapsed = ref(true); // 처음엔 닫힌 상태로 설정
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
@@ -78,17 +82,14 @@ const handleMouseLeave = () => {
 };
 
 const navbarClass = computed(() => {
+  let classes = '';
   if (route.name !== 'MainPageView' || isScrolled.value || isHovered.value) {
-    return 'navbar-scroll navbar-hover';
+    classes = 'navbar-scroll navbar-hover';
   }
-  return '';
-});
-
-const mainContentClass = computed(() => {
-  return {
-    'main-content': true,
-    'main-content-scrolled': route.name !== 'MainPageView'
-  };
+  if (window.innerWidth < 992) {
+    classes += 'navbar-small';
+  }
+  return classes;
 });
 
 onMounted(() => {
@@ -103,83 +104,95 @@ onUnmounted(() => {
 <style scoped>
 @import url('@/assets/fonts.css');
 
-html, body {
-  width: 100%;
-  overflow-x: hidden; /* 수평 스크롤을 숨기도록 설정 */
-  margin: 0;
-  padding: 0;
-}
-
-.logo-padding {
-  padding-left: 3rem;
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .navbar {
   transition: background-color 0.3s, color 0.3s;
-  padding: 0;
-  width: 100%;
-  height: 4.5rem;
-  box-shadow: none;
   background-color: transparent;
-  z-index: 10;
+}
+.navbar-content {
+  padding-left: 15px; /* 기본 여백 */
+  padding-right: 15px; /* 기본 여백 */
+}
+
+@media (min-width: 576px) {
+  .navbar-content {
+    padding-left: 30px; /* 뷰포트가 576px 이상일 때 여백 */
+    padding-right: 30px; /* 뷰포트가 576px 이상일 때 여백 */
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-content {
+    padding-left: 60px; /* 뷰포트가 768px 이상일 때 여백 */
+    padding-right: 60px; /* 뷰포트가 768px 이상일 때 여백 */
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar-content {
+    padding-left: 90px; /* 뷰포트가 992px 이상일 때 여백 */
+    padding-right: 90px; /* 뷰포트가 992px 이상일 때 여백 */
+  }
+}
+/* 토글 버튼이 흰색으로 표시되게 */
+.navbar-toggler {
+  border-color: transparent;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar-toggler:hover .navbar-toggler-icon,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-hover .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%234E5CBF' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .navbar .nav-link {
   color: white;
   transition: color 0.3s;
-  padding-left: 0;
-  padding-right: 0;
 }
 
-.navbar .nav-link:hover {
-  color: #4E5CBF !important;
+.navbar .nav-link:hover,
+.navbar-toggler:hover .navbar-toggler-icon {
+  color: #4E5CBF;
 }
 
 .navbar-scroll, .navbar-hover {
-  background-color: white !important;
+  background-color: white;
 }
 
 .navbar-scroll .nav-link, .navbar-hover .nav-link {
-  color: black !important;
+  color: black;
 }
 
-.navbar-hover .nav-link:hover, .navbar-scroll .nav-link:hover {
-  color: #4E5CBF !important;
+.navbar-scroll .nav-link:hover, .navbar-hover .nav-link:hover {
+  color: #4E5CBF;
 }
 
-.navbar-hover .logo, .navbar-scroll .logo {
-  color: #4E5CBF !important;
+.navbar-scroll .logo, .navbar-hover .logo {
+  color: #4E5CBF;
 }
 
-.nav-item {
-  margin: 0 1rem;
-}
-
-.main-content {
-  padding: 0 15%; /* 좌우 15% 여백 추가 */
-  margin: 0;
-}
-
-.main-content-scrolled {
-  padding-top: 4.5rem;
-}
-
-.background-image-container {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
+.footer {
+  text-align: center;
+  padding: 1rem 0;
+  color: aliceblue;
+  background-color: #4E5CBF;
+  border-top: 1px solid #e7e7e7;
   width: 100%;
-  height: 100vh;
-  z-index: -1;
+  bottom: 0;
 }
 
-.background-image {
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  margin: 0 auto;
+.main-content.with-padding {
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 10%;
+  padding-bottom: 5%;
 }
 </style>

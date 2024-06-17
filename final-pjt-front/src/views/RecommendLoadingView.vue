@@ -28,7 +28,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #B7D7FE; /* 배경색 설정 */
+  background-color: #BED6FB; /* 배경색 설정 */
 }
 
 .loading-image {
